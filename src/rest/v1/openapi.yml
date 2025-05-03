@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 servers:
   - url: http://localhost/v1
 info:
@@ -172,6 +172,14 @@ components:
           type: string
       required:
         - error
+    NotFoundError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Resource not found"
+      required:
+        - error
 paths:
   /:
     summary: The application health check
@@ -186,6 +194,12 @@ paths:
                 properties:
                   status:
                     type: string
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: Failed health check
           content:
@@ -209,6 +223,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/HealthCareFacility'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
     post:
       requestBody:
         content:
@@ -222,6 +248,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthCareFacility'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /facilities/{uuid}/shifts:
     parameters:
       - name: uuid
@@ -242,6 +280,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
     post:
       requestBody:
         content:
@@ -255,6 +305,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Shift'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /workers:
     get:
       responses:
@@ -269,6 +331,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/HealthCareFacility'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
     post:
       requestBody:
         content:
@@ -285,6 +359,18 @@ paths:
                 properties:
                   status:
                     type: string
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /workers/{uuid}/shifts:
     parameters:
       - name: uuid
@@ -305,6 +391,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ShiftAssignment'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
     post:
       requestBody:
         content:
@@ -320,6 +418,18 @@ paths:
                 $ref: '#/components/schemas/ShiftAssignment'
         '400':
           description: Couldn't apply to Shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -355,6 +465,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /shifts:
     get:
       responses:
@@ -369,6 +491,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /block-worker:
     post:
       requestBody:
@@ -385,6 +519,18 @@ paths:
                 $ref: '#/components/schemas/BlockedWorker'
         '400':
           description: Couldn't block worker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
