@@ -56,7 +56,7 @@ The project provides several npm scripts for different development scenarios:
   ```
   This will:
   1. Generate Prisma client
-  2. Sync resources
+  2. Sync resources (like openapi.yml)
   3. Compile TypeScript to JavaScript
 
 - **Start Production Build**:
@@ -70,13 +70,17 @@ Choose the appropriate command based on your development needs:
 - Use `npm run run` for one-off runs or testing
 - Use `npm run build` followed by `npm start` for production-like environments
 
-For detailed information about PR reviewing, please see the [challenge.md](docs/challenge.md).
+For detailed information about PR reviewing and applied implementation, please see the [challenge](docs/challenge.md).
 
 ## API Documentation
 
-When the server is running, you can access the API documentation at:
+When the server is running, you can access the interactive API documentation (Swagger UI) at:
 ```
 http://localhost/v1/docs
 ```
 
-For detailed examples of how to use the API, see [API Request Examples](docs/request-examples.md).
+For detailed examples of how to use the API via HTTP requests, see [API Request Examples](docs/request-examples.md).
+
+## Codebase Improvements
+
+Potential improvements and bugs identified during review are documented in [Codebase Improvements](docs/improvements.md).
