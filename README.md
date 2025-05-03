@@ -1,6 +1,6 @@
 # Healthcare Worker Management System
 
-This repository contains a simplified project for managing healthcare worker shifts and ratings. For detailed information about the PR review exercise, please see [docs/challenge.md](docs/challenge.md).
+This repository contains a simplified project for managing healthcare worker shifts and ratings.
 
 ## Local Setup
 
@@ -34,8 +34,42 @@ Apply DB migrations with:
 > $ npx prisma migrate dev
 ```
 
-And finally, run the server with:
+## Development Workflow
 
-```sh
-> $ npm start
-```
+The project provides several npm scripts for different development scenarios:
+
+- **Development Mode** (with auto-reload):
+  ```sh
+  > $ npm run dev
+  ```
+  This uses nodemon to automatically restart the server when files change.
+
+- **Run Once** (without auto-reload):
+  ```sh
+  > $ npm run run
+  ```
+  Runs the server once using ts-node.
+
+- **Build for Production**:
+  ```sh
+  > $ npm run build
+  ```
+  This will:
+  1. Generate Prisma client
+  2. Sync resources
+  3. Compile TypeScript to JavaScript
+
+- **Start Production Build**:
+  ```sh
+  > $ npm start
+  ```
+  Runs the compiled JavaScript code from the `dist` directory.
+
+Choose the appropriate command based on your development needs:
+- Use `npm run dev` during active development for the best developer experience
+- Use `npm run run` for one-off runs or testing
+- Use `npm run build` followed by `npm start` for production-like environments
+
+## Reviewing code
+
+For detailed information about the merged PR as a review exercise, please see the [challenge](docs/challenge.md).
