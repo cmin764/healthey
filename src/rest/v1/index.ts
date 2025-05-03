@@ -6,10 +6,12 @@ import {
 } from "../../core/facilityManagement";
 import {
   applyToShift,
+  blockWorker,
   createShift,
   listAllShifts,
   listHealthCareFacilityShifts,
   listWorkerShifts,
+  rateWorker,
 } from "../../core/shiftManagement";
 import { createWorker, listWorkers } from "../../core/workerManagement";
 
@@ -57,16 +59,34 @@ v1.post(workersBase, async (req, res) => {
 });
 
 v1.get(`${workersBase}/:uuid/shifts`, async (req, res) => {
-  const shifts = await listWorkerShifts(req.params.uuid);
-  res.send(JSON.stringify({ shifts }));
+  const shiftAssignments = await listWorkerShifts(req.params.uuid);
+  res.send(JSON.stringify({ shiftAssignments }));
 });
 
 v1.post(`${workersBase}/:uuid/shifts`, async (req, res) => {
-  const shift = await applyToShift(
+  const { error, data } = await applyToShift(
     req.params.uuid,
     req.body.shiftUuid,
   );
-  res.send(JSON.stringify(shift));
+  if (error)
+    res.status(400).json({ error });
+  else
+    res.json(data);
+});
+
+// Ratings
+v1.post(`${workersBase}/:workerUuid/shifts/:shiftUuid/rate`, async (req, res) => {
+  const { workerUuid, shiftUuid } = req.params;
+
+  /* Note that ratings can be currently replaced at any time. Maybe we'd like to have
+  them read-only once they are set.
+  */
+  const rating = Number(req.body.rating);
+  const { error, data } = await rateWorker(workerUuid, shiftUuid, rating);
+  if (error)
+    res.status(400).json({ error });
+  else
+    res.json(data);
 });
 
 // Shifts
@@ -74,4 +94,14 @@ const shiftsBase = "/shifts";
 v1.get(shiftsBase, async (req, res) => {
   const shifts = await listAllShifts();
   res.send(JSON.stringify({ shifts }));
+});
+
+// Block workers
+v1.post("/block-worker", async (req, res) => {
+  const { workerUuid, shiftUuid, blockReason } = req.body;
+  const { error, data } = await blockWorker(workerUuid, shiftUuid, blockReason);
+  if (error)
+    res.status(400).json({ error });
+  else
+    res.json(data);
 });

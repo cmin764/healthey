@@ -113,6 +113,9 @@ components:
           type: string
         workerUuid:
           type: string
+        rating:
+          type: number
+          nullable: true
         shift:
           $ref: '#/components/schemas/Shift'
         worker:
@@ -127,6 +130,48 @@ components:
           type: string
       required:
         - shiftUuid
+    RateWorkerInput:
+      type: object
+      properties:
+        rating:
+          type: integer
+      required:
+        - rating
+    BlockedWorker:
+      type: object
+      properties:
+        shiftUuid:
+          type: string
+        workerUuid:
+          type: string
+        facilityUuid:
+          type: string
+        blockReason:
+          type: string
+        worker:
+          $ref: '#/components/schemas/Worker'
+        facility:
+          $ref: '#/components/schemas/HealthCareFacility'
+    BlockWorkerInput:
+      type: object
+      properties:
+        shiftUuid:
+          type: string
+        workerUuid:
+          type: string
+        blockReason:
+          type: string
+      required:
+        - shiftUuid
+        - workerUuid
+        - blockReason
+    GenericError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
 paths:
   /:
     summary: The application health check
@@ -256,10 +301,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  shifts:
+                  shiftAssignments:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Shift'
+                      $ref: '#/components/schemas/ShiftAssignment'
     post:
       requestBody:
         content:
@@ -273,6 +318,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShiftAssignment'
+        '400':
+          description: Couldn't apply to Shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /workers/{workerUuid}/shifts/{shiftUuid}/rate:
+    parameters:
+      - name: workerUuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: shiftUuid
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateWorkerInput'
+      responses:
+        '200':
+          description: Successfully rated a Worker for a Shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftAssignment'
+        '400':
+          description: Couldn't apply rating to the Worker in a Shift
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /shifts:
     get:
       responses:
@@ -287,3 +369,23 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Shift'
+  /block-worker:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockWorkerInput'
+      responses:
+        '200':
+          description: Successfully blocked a Worker from working shifts for a Healthcare facility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockedWorker'
+        '400':
+          description: Couldn't block worker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
