@@ -1,13 +1,20 @@
 import path from "path";
 import express from "express";
 import * as OpenApiValidator from "express-openapi-validator";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
 
 import { v1 } from "./v1";
 import { prisma } from "../prismaClient";
 
-
 const app = express();
 const PORT = process.env.PORT || 80;
+
+// Load OpenAPI spec
+const openApiSpec = YAML.load(path.join(__dirname, "v1", "openapi.yml"));
+
+// Serve Swagger UI
+app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.use(express.json());
 app.use(
@@ -18,7 +25,6 @@ app.use(
   }),
 );
 app.use("/v1", v1);
-
 
 export function start() {
   const server = app.listen(PORT, () => {
