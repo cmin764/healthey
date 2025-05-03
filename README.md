@@ -1,6 +1,6 @@
 # Healthcare Worker Management System
 
-This repository contains a simplified project for managing healthcare worker shifts and ratings.
+This repository contains a simplified project for managing healthcare worker shifts and their ratings with blocking support.
 
 ## Local Setup
 
@@ -70,6 +70,13 @@ Choose the appropriate command based on your development needs:
 - Use `npm run run` for one-off runs or testing
 - Use `npm run build` followed by `npm start` for production-like environments
 
-## Reviewing code
+For detailed information about PR reviewing, please see the [challenge.md](docs/challenge.md).
 
-For detailed information about the merged PR as a review exercise, please see the [challenge](docs/challenge.md).
+## API Documentation
+
+When the server is running, you can access the API documentation at:
+```
+http://localhost/v1/docs
+```
+
+For detailed examples of how to use the API, see [API Request Examples](docs/request-examples.md).
